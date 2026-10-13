@@ -7,7 +7,9 @@ A 2D platformer where the level is a quantum circuit. The power is out in a quan
 
 This effort is supported by Qollab & IonQ.
 
-> Team Members: Yusuf Ahmed, Dev Chauhan, Ayesha Iqbal. &nbsp;·&nbsp; Qollab Project Page: https://qollab.xyz/u/D3vsinh/blackout-lab-educational-game
+> Team Members: Yusuf Ahmed, Dev Chauhan, Ayesha Iqbal.
+
+> Qollab Project Page: https://qollab.xyz/u/D3vsinh/blackout-lab-educational-game
 
 ## How to run it
 
@@ -133,4 +135,3 @@ The playthrough is a bot that plays all seven floors and the ending in headless 
 - **AI assistance:** Claude (Anthropic) was used in helping design, code, test, and refining documentation text during the build window.
 - **Prior work:** none. No template or earlier project was used, and no code was copied from anywhere.
 - **Where the platform know-how came from:** the [Qollab documentation](https://qollab.xyz/learn/docs/runtime-environment) (file layout, `callPromising`, one job per run), and reading three public repositories from this hackathon to see how they talk to Qollab: [tomcode1000/Canary](https://github.com/tomcode1000/Canary), [AGONIXX15/quantum_project_qollab](https://github.com/AGONIXX15/quantum_project_qollab) and [udsy19/Qollab-Hackathon](https://github.com/udsy19/Qollab-Hackathon). Two ideas are taken from the second of these and re-implemented here: compiling against the backend with a pinned layout and then dropping idle device qubits (`engine/calibrate.py`), and ending `main.js` with a never-resolving `await` so the run stays alive.
-=======
