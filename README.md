@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Blackout Lab
 
 A 2D platformer where the level is a quantum circuit. The power is out in a quantum computing building and the lift platforms have become entangled with the lab's qubits. A platform in superposition is in two places at once until your flashlight lights it, because light is a measurement. Over seven floors you apply gates at terminals, carry a sealed qubit between rooms, save a cat, teleport a door key, and cross a floor with no light at all. Then you climb to the roof and bring the power back.
