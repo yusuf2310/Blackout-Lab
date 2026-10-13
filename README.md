@@ -1,4 +1,5 @@
 # Blackout Lab
+By Team Qute Bits.
 
 A 2D platformer where the level is a quantum circuit. The power is out in a quantum computing building and the lift platforms have become entangled with the lab's qubits. A platform in superposition is in two places at once until your flashlight lights it, because light is a measurement. Over seven floors you apply gates at terminals, carry a sealed qubit between rooms, save a cat, teleport a door key, and cross a floor with no light at all. Then you climb to the roof and bring the power back.
 
@@ -133,6 +134,3 @@ The playthrough is a bot that plays all seven floors and the ending in headless 
 - **Prior work:** none. No template or earlier project was used, and no code was copied from anywhere.
 - **Where the platform know-how came from:** the [Qollab documentation](https://qollab.xyz/learn/docs/runtime-environment) (file layout, `callPromising`, one job per run), and reading three public repositories from this hackathon to see how they talk to Qollab: [tomcode1000/Canary](https://github.com/tomcode1000/Canary), [AGONIXX15/quantum_project_qollab](https://github.com/AGONIXX15/quantum_project_qollab) and [udsy19/Qollab-Hackathon](https://github.com/udsy19/Qollab-Hackathon). Two ideas are taken from the second of these and re-implemented here: compiling against the backend with a pinned layout and then dropping idle device qubits (`engine/calibrate.py`), and ending `main.js` with a never-resolving `await` so the run stays alive.
 =======
-# QuteBits
-Qollab hackathon 2026
->>>>>>> 160b90edc0863cff7055f3b75c927a5e81aede1d
