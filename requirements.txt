@@ -1,0 +1,2 @@
+# Qollab installs this in the browser. Qiskit is the only dependency.
+qiskit>=2.5.2,<3.0.0

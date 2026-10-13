@@ -1,0 +1,222 @@
+<div class="lab" id="lab">
+  <header class="topbar">
+    <p class="brand"><span class="brand-mark">Blackout Lab</span> <span class="brand-sub">A Qiskit Jumping Puzzle Game</span></p>
+    <div class="hud" id="hud" aria-label="Game status">
+      <span class="hud-item" id="hud-floor">Floor 1 of 7</span>
+      <span class="hud-item hud-name" id="hud-name">Superposition</span>
+      <span class="hud-item" id="hud-lives" aria-label="Lives: 3"></span>
+      <span class="hud-item hud-torch" id="hud-torch" hidden></span>
+    </div>
+    <div class="top-actions">
+      <button type="button" class="key-btn" id="btn-restart" disabled>Restart floor <kbd>R</kbd></button>
+      <button type="button" class="key-btn" id="btn-pause" disabled>Pause <kbd>P</kbd></button>
+      <button type="button" class="key-btn" id="btn-sound" aria-pressed="true">Sound <kbd>M</kbd></button>
+    </div>
+  </header>
+
+  <div class="deck">
+    <div class="left">
+      <div class="viewport" id="viewport">
+        <canvas id="game" width="960" height="540" tabindex="0" role="img"
+          aria-label="Game view: a dark building floor with a gap to cross. Status and every quantum event are also given as text in the instrument rack and announced as they happen."></canvas>
+        <p class="toast" id="toast" hidden></p>
+
+        <div class="overlay" id="overlay">
+          <section class="screen" id="screen-title" aria-labelledby="title-h">
+            <div class="title-main">
+              <p class="eyebrow">Seven floors &middot; one flashlight</p>
+              <h1 id="title-h">Blackout Lab</h1>
+              <p class="lede">The power is out in a quantum research facility, and the lift platforms have become
+                entangled with the laboratory's qubits, exhibiting macroscopic quantum behaviour!</p>
+              <p class="lede">Use your flashlight to perform measurements and terminals to alter quantum states.</p>
+              <p class="lede">Climb the floors to reach the terrace and restore power to the laboratory.</p>
+              <div class="title-actions">
+                <button type="button" class="primary" id="btn-start" disabled>Waiting for the lab</button>
+                <button type="button" class="key-btn" id="btn-floors" aria-expanded="false" aria-controls="title-floors" disabled>Skip to floor</button>
+                <button type="button" class="key-btn" id="btn-skip" hidden>Start now with ideal physics</button>
+              </div>
+              <div class="replay-floors" id="title-floors" hidden></div>
+              <div class="boot" id="boot">
+                <p class="boot-line" id="boot-status" role="status">Loading Qiskit in your browser. This can take a
+                  little while the first time.</p>
+                <table class="selftest" id="selftest" hidden>
+                  <caption id="selftest-caption">Lab self-test</caption>
+                  <tbody id="selftest-body"></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="title-side">
+              <h2>Controls</h2>
+              <dl class="keys">
+                <div><dt><kbd>&larr;</kbd> <kbd>&rarr;</kbd> or <kbd>A</kbd> <kbd>D</kbd></dt><dd>Walk</dd></div>
+                <div><dt><kbd>Space</kbd> or <kbd>W</kbd></dt><dd>Jump</dd></div>
+                <div><dt>Mouse, or <kbd>I</kbd> <kbd>K</kbd></dt><dd>Aim the flashlight</dd></div>
+                <div><dt><kbd>F</kbd></dt><dd>Flashlight on / off</dd></div>
+                <div><dt><kbd>E</kbd></dt><dd>Use a terminal, talk, open a door</dd></div>
+                <div><dt><kbd>H</kbd></dt><dd>Show a hint</dd></div>
+                <div><dt><kbd>P</kbd></dt><dd>Pause and options</dd></div>
+              </dl>
+              <p class="fine">Fall into the gap and you lose a life and the floor resets. Lose all three on one
+                floor and you start again from floor 1. There is no timer. Unlimited lives and noise settings are in
+                the pause menu.</p>
+            </div>
+          </section>
+
+          <section class="screen screen-card" id="screen-pause" aria-labelledby="pause-h" hidden>
+            <h2 id="pause-h">Paused</h2>
+            <fieldset class="options">
+              <legend>Options</legend>
+              <label class="opt" for="opt-lives"><input type="checkbox" id="opt-lives"> Unlimited lives</label>
+              <label class="opt" for="opt-noise"><input type="checkbox" id="opt-noise" checked> Hardware noise from the
+                self-test <span class="fine" id="opt-noise-note"></span></label>
+              <label class="opt" for="opt-floor">Skip to floor <select id="opt-floor"></select></label>
+            </fieldset>
+            <table class="selftest" id="selftest-pause" hidden>
+              <caption id="selftest-pause-caption">Lab self-test</caption>
+              <tbody id="selftest-pause-body"></tbody>
+            </table>
+            <div class="title-actions">
+              <button type="button" class="primary" id="btn-resume">Resume</button>
+              <button type="button" class="key-btn" id="btn-restart-2">Restart floor</button>
+              <button type="button" class="key-btn" id="btn-quit">Back to title</button>
+            </div>
+          </section>
+
+          <section class="screen screen-card" id="screen-complete" aria-labelledby="complete-h" hidden>
+            <p class="eyebrow" id="complete-eyebrow">Floor cleared</p>
+            <h2 id="complete-h">Superposition</h2>
+            <p class="stars" id="complete-stars" role="img" aria-label="3 of 3 stars"></p>
+            <ul class="star-list" id="complete-star-list"></ul>
+            <p class="lede" id="complete-takeaway"></p>
+            <p class="fine" id="complete-stats"></p>
+            <div class="title-actions">
+              <button type="button" class="primary" id="btn-next">Next floor</button>
+              <button type="button" class="key-btn" id="btn-replay">Play this floor again</button>
+            </div>
+          </section>
+
+          <section class="screen screen-card" id="screen-over" aria-labelledby="over-h" hidden>
+            <p class="eyebrow">Out of lives</p>
+            <h2 id="over-h">Back to floor 1</h2>
+            <p class="lede">Three falls on one floor, and the climb starts again from the first floor. Unlimited
+                lives are in the pause menu if you would rather focus on the puzzles.</p>
+            <div class="title-actions">
+              <button type="button" class="primary" id="btn-retry">Start again from floor 1</button>
+              <button type="button" class="key-btn" id="btn-over-quit">Back to title</button>
+            </div>
+          </section>
+
+          <section class="screen screen-card" id="screen-win" aria-labelledby="win-h" hidden>
+            <p class="eyebrow">Power restored</p>
+            <h2 id="win-h">Thank you for playing.</h2>
+            <p class="stars stars-total" id="win-stars"></p>
+            <p class="lede">You used superposition, measurement, interference, entanglement and teleportation to cross
+              a building in the dark. Every floor's circuit is a real Qiskit circuit: open "This floor as Qiskit code"
+              in the rack on any floor, paste it into a notebook and run it.</p>
+            <p class="fine" id="win-stats"></p>
+            <div class="title-actions">
+              <button type="button" class="primary" id="btn-home">Return to start</button>
+            </div>
+            <div class="replay" role="group" aria-labelledby="replay-h">
+              <h3 class="replay-h" id="replay-h">Replay a specific floor</h3>
+              <div class="replay-floors" id="win-floors"></div>
+            </div>
+          </section>
+
+          <section class="screen screen-card" id="screen-error" aria-labelledby="error-h" hidden>
+            <p class="eyebrow">Quantum engine</p>
+            <h2 id="error-h">Something went wrong</h2>
+            <p class="lede" id="error-text"></p>
+            <div class="title-actions">
+              <button type="button" class="primary" id="btn-error-retry">Try again</button>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="touch" id="touch" hidden>
+        <div class="touch-group">
+          <button type="button" class="touch-btn" data-hold="left" aria-label="Move left">&#9664;</button>
+          <button type="button" class="touch-btn" data-hold="right" aria-label="Move right">&#9654;</button>
+        </div>
+        <div class="touch-group">
+          <button type="button" class="touch-btn" data-tap="torch" aria-label="Flashlight on or off">F</button>
+          <button type="button" class="touch-btn" data-tap="use" aria-label="Use terminal">E</button>
+          <button type="button" class="touch-btn" data-hold="jump" aria-label="Jump">&#9650;</button>
+        </div>
+      </div>
+
+      <div class="dock" id="dock">
+        <div class="dock-play" id="dock-play">
+          <p class="prompt" id="prompt">The lab is starting up.</p>
+          <p class="note" id="note" hidden></p>
+        </div>
+        <div class="dock-terminal" id="dock-terminal" role="group" aria-labelledby="term-title" hidden>
+          <div class="term-head">
+            <h2 id="term-title">Terminal T1</h2>
+            <button type="button" class="key-btn term-exit" id="term-close">Press <kbd>E</kbd> to Exit Terminal</button>
+          </div>
+          <div class="term-ops" id="term-ops"></div>
+          <p class="term-status" id="term-status" role="status"></p>
+        </div>
+      </div>
+    </div>
+
+    <aside class="rack" aria-label="Quantum instruments">
+      <div class="rack-inner">
+        <section class="module" id="about" aria-labelledby="about-h" hidden>
+          <h2 class="plate" id="about-h">About</h2>
+          <p class="goal">This game was made during the Qollab &times; IonQ Hackathon 2026 build window.</p>
+          <ul class="about-links">
+            <li><span>View Qollab Project Page:</span> <a href="" target="_blank" rel="noopener noreferrer"></a></li>
+            <li><span>View GitHub Repository:</span> <a href="" target="_blank" rel="noopener noreferrer"></a></li>
+          </ul>
+        </section>
+        <section class="module" aria-labelledby="mod-circuit-h">
+          <div class="module-head">
+            <h2 class="plate" id="mod-circuit-h">Circuit</h2>
+            <button type="button" class="key-btn mini" id="circuit-expand" aria-expanded="false">Expand</button>
+          </div>
+          <div class="circuit" id="circuit">
+            <div class="circuit-fixed" id="circuit-labels"></div>
+            <div class="circuit-scroll" id="circuit-gates" tabindex="0" aria-label="Gates applied so far, scrolls sideways"></div>
+            <div class="circuit-fixed" id="circuit-readout"></div>
+          </div>
+          <div class="sr-only" id="circuit-desc"></div>
+          <p class="fine" id="stats">0 gates</p>
+          <details class="code-box">
+            <summary>This floor as Qiskit code</summary>
+            <pre id="code" tabindex="0"></pre>
+            <button type="button" class="key-btn" id="copy-code">Copy code</button>
+          </details>
+        </section>
+
+        <section class="module" aria-labelledby="mod-probs-h">
+          <h2 class="plate" id="mod-probs-h">Probabilities</h2>
+          <p class="fine legend"><span class="swatch s0"></span>0 &middot; lowered <span class="swatch s1"></span>1 &middot; raised
+            <span class="swatch sj"></span>entangled outcome</p>
+          <div id="probs"></div>
+          <div id="joint" aria-live="polite"></div>
+        </section>
+
+        <section class="module" aria-labelledby="mod-notes-h">
+          <h2 class="plate" id="mod-notes-h">Lab notes</h2>
+          <p class="floor-tag" id="floor-tag">Floor 1 of 7</p>
+          <p class="goal" id="goal"></p>
+          <p class="concept" id="concept"></p>
+          <ol class="hints" id="hints"></ol>
+          <button type="button" class="key-btn" id="hint-button">Show a hint (H)</button>
+          <ul class="gate-list" id="gate-list"></ul>
+          <h3 class="plate plate-small">Event log</h3>
+          <ul class="log" id="log"></ul>
+        </section>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="credit">
+    <p>This effort is supported by Qollab &amp; IonQ.</p>
+    <p>Physics: <span id="engine-name">Qiskit</span> &middot; Backend: <span id="hud-backend">self-test pending</span> &middot; MIT licence</p>
+  </footer>
+  <div class="sr-only" id="live" aria-live="polite" aria-atomic="true"></div>
+</div>

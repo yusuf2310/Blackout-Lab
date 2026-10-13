@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blackout Lab (local dev)</title>
+<link rel="stylesheet" href="../main.css">
+<script>
+  // Qollab resolves 'engine.bridge' to the Python module. Locally an import map
+  // points it at a shim: real Qiskit over HTTP (default) or the JS stand-in (?engine=js).
+  const useJs = new URLSearchParams(location.search).get('engine') === 'js';
+  const map = document.createElement('script');
+  map.type = 'importmap';
+  map.textContent = JSON.stringify({
+    imports: { 'engine.bridge': new URL(useJs ? './bridge-mock.js' : './bridge-http.js', location.href).href },
+  });
+  document.currentScript.after(map);
+</script>
+</head>
+<body>
+<div id="root"></div>
+<script type="module">
+  // Qollab inserts index.html into the page body; do the same here.
+  document.getElementById('root').innerHTML = await (await fetch('../index.html')).text();
+  await import('../main.js');
+</script>
+</body>
+</html>
