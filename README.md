@@ -7,7 +7,7 @@ A 2D platformer where the level is a quantum circuit. The power is out in a quan
 
 This effort is supported by Qollab & IonQ.
 
-> Team: _add names_ &nbsp;·&nbsp; Demo video: _add link_ &nbsp;·&nbsp; Repository: _add link_
+> Team Members: Yusuf Ahmed, Dev Chauhan, Ayesha Iqbal. &nbsp;·&nbsp; Qollab Project Page: https://qollab.xyz/u/D3vsinh/blackout-lab-educational-game
 
 ## How to run it
 
